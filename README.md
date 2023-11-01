@@ -1,16 +1,15 @@
 # Data visualization
 👀 Projet data visualization ISUP
 
-🚀 L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization/)
+🚀 L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization_2/)
 
 👾 Les membres du projet : Juliette, Maxence et Pierre
 
 ## Introduction
-L'application *Earthquake🅁* est une app Rshiny, son objectif est de visualiser et d'étudier les séismes recueillis par le Service géologique des États-Unis en juin 2016. *Earthquake🅁* est composé de quatres sections : 
+L'application *Earthquake🅁* est une app Rshiny, son objectif est de visualiser et d'étudier les séismes recueillis par le Service géologique des États-Unis en juin 2016. *Earthquake🅁* est composé de trois sections : 
 * 🌍 Map, la carte du monde interactive pour visualiser la localisation et l'impact des séismes.
-* 📈 Plot, les graphiques dynamiques permettent ...
 * 📊 Histogramme, ...
-* 🤖 Machine learning, ...
+* 🤖 Modèles prédictifs, ...
 
 ## Fonctionnement de Earthquake🅁
 
@@ -19,13 +18,10 @@ La carte du monde est entièrement interactive. Il est possible de zoommer et/ou
 Les deux sliders permettent de filtrer la base de données  par rapport à la période et la magnitude des séismes que l'utilisateur souhaite observer.
 La palette de couleurs permet de modifier le gradient de couleur qui sert d'échelle pour les dégâts causé par les séismes (plus de 25 gradients de couleurs sont disponible). Le bouton "Afficher la légende" peut être coché ou décoché pour afficher ou non la légende.
 
-#### Plot
+#### Statistiques
 ...
 
-#### Historgramme
-...
-
-#### Machine learning
+#### Modèles prédictifs
 ...
 
 ## Data base
