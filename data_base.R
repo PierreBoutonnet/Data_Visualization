@@ -42,7 +42,9 @@ dat <- dat %>%
   mutate (location.country = coalesce(location.country, "Water"))
 
 location.continent.unique <- unique(dat$location.continent)
-
+location.continent.unique<-c(location.continent.unique,'All','comparaison')
+length(location.continent.unique)
+location.continent.unique
 # conversion du jour 
 dat$time.day <- (dat$time.day + 5) %% 31
 
@@ -51,7 +53,7 @@ dat$time.day <- (dat$time.day + 5) %% 31
 dat <- dat[,c(1,2,3,4,5,6,8,9,11,19,20)]
 
 # on ne garde que certianes valeurs si les données ne sont pas safe
-dat <- dat[!(dat$location.depth > quantile(dat$location.depth, probs = 0.75) | dat$location.gap > 180), ]
+dat <- dat[!(dat$location.distance > 7.1 | dat$location.gap > 180), ]
 
 # on enlève les NAs
 dat <- na.omit(dat)

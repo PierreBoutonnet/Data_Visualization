@@ -6,6 +6,7 @@ library(rworldmap)
 library(shinythemes)
 library(ggplot2)
 library(DT)
+library(plotly)
 
 ##############################################################
 
@@ -80,15 +81,19 @@ server <- function(input, output, session) {
   
   ### histogramme
   
+  library(shiny)
+  library(plotly)
+  
+  # ...
   output$hist <- renderPlot({
-    if(input$ctn==location.continent.unique[5]){
+    if(input$ctn==location.continent.unique[8]){
       ggplot(dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2],], aes(impact.magnitude, fill = location.continent)) + 
         geom_histogram(color="darkblue",bins = input$brk, position = 'identity')+
-        scale_color_manual(values=brewer.pal(3, "Set2"))+
-        scale_fill_manual("Continent", values=brewer.pal(3, "Set2"))+
+        scale_color_manual(values=brewer.pal(6, "Set2"))+
+        scale_fill_manual("Continent", values=brewer.pal(6, "Set2"))+
         labs(x="Magnitude", y = "Fréquence")
     }
-    else if(input$ctn==location.continent.unique[4]){
+    else if(input$ctn==location.continent.unique[7]){
       ggplot(dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2],],aes(x = impact.magnitude))+
         geom_histogram( color="darkblue",fill="#009999",bins = input$brk)+
         labs(x="Magnitude", y = "Fréquence")
@@ -98,16 +103,14 @@ server <- function(input, output, session) {
         geom_histogram( color="darkblue",fill="#009999",bins = input$brk)+
         labs(x="Magnitude", y = "Fréquence")
     }
-  }) 
+  })
+  
   
   ###stat
   
   output$stats <- renderPrint({
-    if(input$ctn==location.continent.unique[4]){
-      K<-subset(dat$temps,dat$day>=input$num1[1] & dat$day<=input$num1[2],"impact.magnitude")
-    }
-    else{
-      K<-subset(dat$impact.magnitude,dat$day>=input$num1[1] & dat$day<=input$num1[2] & dat$location.continent == input$ctn,"impact.magnitude")
+    if(input$ctn != location.continent.unique[7] || location.continent.unique[8]){
+      K<-subset(dat$impact.magnitude,dat$time.day>=input$num1[1] & dat$time.day<=input$num1[2] & dat$location.continent == input$ctn,"impact.magnitude")
     }
     summary(K)
   })
@@ -116,19 +119,20 @@ server <- function(input, output, session) {
   
   
   output$boxplot2<-renderPlot({
-    if(input$ctn==location.continent.unique[5]){
+    if(input$ctn==location.continent.unique[8]){
       ggplot(data = dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2],])+
-        geom_boxplot(aes(x = location.continent, y = impact.magnitude ),color = brewer.pal(3, "Set2"))+
+        geom_boxplot(aes(x = location.continent, y = impact.magnitude ))+
         geom_jitter(aes(x = location.continent, y = impact.magnitude),color = "#009999",alpha = 0.2)+
         labs(x="Continent", y = "Fréquence")
     }
-    else if(input$ctn==location.continent.unique[4]){
+    else if(input$ctn==location.continent.unique[7]){
       ggplot(data = dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2],])+
         geom_boxplot(aes(x = input$ctn, y = impact.magnitude ))+
         geom_jitter( aes(x = input$ctn, y = impact.magnitude),color = "#009999",alpha = 0.2)+
         labs(x="Continent", y = "Fréquence")
     }
-    else{
+    
+    else {
       ggplot(data = dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2] & dat$location.continent==input$ctn,])+
         geom_boxplot(aes(x = input$ctn, y = impact.magnitude ))+
         geom_jitter( aes(x = input$ctn, y = impact.magnitude),color = "#009999",alpha = 0.2)+
