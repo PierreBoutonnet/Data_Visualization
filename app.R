@@ -133,7 +133,7 @@ print(paste("erreur quadratique moyenne : ", rmse))
 #######################################################################################################
 
 ui <- bootstrapPage(
-  navbarPage(theme = shinytheme("flatly"),title = "Etude Spatio-Temporelle de Séismes",
+  navbarPage(theme = shinytheme("flatly"),title = "Earthquake🅁",
              tabPanel(title = "Carte",
                       leafletOutput("map", width="100%", height="800px"),
                       absolutePanel(id = "controls", class = "panel panel-default",
