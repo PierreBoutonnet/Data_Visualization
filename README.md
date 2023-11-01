@@ -15,7 +15,13 @@ L'application Earthquake🅁 est une app Rshiny, son objectif est de visualiser 
 Une despcription complète du dataset est disponible ici.
 
 #### Map 
-La carte est entièrement interactive. Il est possible de zoommer et/ou de cliquer sur les séismes. En cliquant sur les séismes plusieurs informations s'affichent comme l'ID du séismes, sa magnitude et les dégats causés par celui-ci.
+La carte est entièrement interactive. Il est possible de zoommer et/ou de cliquer sur les séismes symbolisés par des cerlce de couleur. En cliquant sur les séismes plusieurs informations s'affichent comme l'ID du séismes, sa magnitude et les dégats causés par celui-ci. 
+
+#### Plot
+.
+.
+.
+
 
 
 
