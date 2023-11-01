@@ -1,34 +1,23 @@
-# Installer les packages nécessaires si vous ne les avez pas déjà
-install.packages("caret")
-install.packages("randomForest")
+#install.packages("caret")
+#install.packages("randomForest")
 
-# Charger les bibliothèques
-library(caret)
 library(randomForest)
 
-# Charger vos données de séismes (supposons que les données sont dans un data frame appelé "seismes")
-# Assurez-vous que votre jeu de données contient une colonne "gravite" indiquant la gravité (par exemple, 0 pour faible, 1 pour élevée)
+######################
+###Machine learning###
+######################
+set.seed(123)
 
-# Diviser les données en ensembles d'entraînement et de test
-set.seed(123)  # Pour rendre les résultats reproductibles
-trainIndex <- createDataPartition(seismes$gravite, p = 0.8, 
-                                  list = FALSE,
-                                  times = 1)
-data_train <- seismes[trainIndex, ]
-data_test <- seismes[-trainIndex, ]
+train_index <- sample(1:nrow(dat), 0.7 * nrow(dat))
 
-# Créer le modèle de forêt aléatoire
-model <- randomForest(gravite ~ magnitude + longitude + latitude + profondeur, data = data_train)
+train_data <- dat[train_index,]
+test_data <- dat[-train_index,]
 
-# Faire des prédictions sur l'ensemble de test
-predictions <- predict(model, data_test)
+rf_model <- randomForest(sig ~ dep + continentbis, data = train_data)
+rf_model
 
-# Évaluer la performance du modèle
-confusionMatrix(predictions, data_test$gravite)
+predictions <- predict(rf_model, newdata = test_data)
 
-# Vous pouvez maintenant utiliser ce modèle pour prédire la gravité des séismes
-# par exemple, si vous avez de nouvelles données de séismes dans un data frame "nouveaux_seismes"
-new_predictions <- predict(model, nouvelles_seismes)
+rmse <- sqrt(mean((predictions- test_data$sig)^2))
+print(paste("erreur quadratique moyenne : ", rmse))
 
-# Afficher la matrice de confusion
-confusionMatrix(new_predictions, nouvelles_seismes$gravite)
