@@ -1,5 +1,5 @@
 # Data visualization
-👀 Data visualization project at ISUP 
+👀 Projet data visualization ISUP
 
 👾 Les membres du projet : Juliette, Maxence et Pierre
 
@@ -9,3 +9,14 @@ L'application Earthquake🅁 est une app Rshiny, son objectif est de visualiser 
 * 📈 Plot, le graphiques dynamique permet ...
 * 📊 Histogramme, ...
 * 🤖 Machine learning, ...
+
+## Fonctionnement de Earthquake🅁
+
+Une despcription complète du dataset est disponible ici.
+
+#### Map 
+La carte est entièrement interactive. Il est possible de zoommer et/ou de cliquer sur les séismes. En cliquant sur les séismes plusieurs informations s'affichent comme l'ID du séismes, sa magnitude et les dégats causés par celui-ci.
+
+
+
+
