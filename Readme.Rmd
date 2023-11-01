@@ -1,0 +1,16 @@
+
+## Motivation :
+La principale motivation derière cette application RShiny est de localiser les séismes et de comprendre le lien entre la magnitude d'un séisme et sa localisation. Pour ce faire, nous avons créé une carte interactive pour visualiser au mieux les séismes et nous avons comparé les magnitudes des séismes de trois zones géographiques (Amérique du Nord & Sud, Europe et Afrique, Asie et Océanie). 
+
+## Data :
+Les données de l'application proviennent de la plate-forme de données CORGIS Datasets Project (https://corgis-edu.github.io/corgis/csv/earthquakes/). Les données originales sont disponibles sous forme de fichier csv appelé "earthquakes.csv". Sur le site sont décrites les 18 premières variables du jeu de données. Le reste sont des variables que nous avons rajoutées nous-mêmes :
+- "nday" : Numéro du jour par rapport au premier (On fixe le jour 1 au 27 Juillet 2016).
+- "mag_catego" : On divise les séismes en classe par rapport à leur magnitude.
+- "continentbis" : Chaque séisme est localisé sur une zone géographique précise correspondant à 2 continents.
+- "country" : Pays exact où à eu lieu le séisme.
+
+## Améliorations futures :
+- Comparer les magnitudes des séismes en délimitant des zones géographiques plus préciseemment (Exemple : pays ou états).
+- Prendre en compte d'autres variables.
+
+
