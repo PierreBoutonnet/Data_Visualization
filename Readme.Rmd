@@ -13,4 +13,7 @@ Les données de l'application proviennent de la plate-forme de données CORGIS D
 - Comparer les magnitudes des séismes en délimitant des zones géographiques plus préciseemment (Exemple : pays ou états).
 - Prendre en compte d'autres variables.
 
+## Visualisation 
+ Sur Rshiny (https://pierreboutonnet.shinyapps.io/Data_Visualization/)
+
 
