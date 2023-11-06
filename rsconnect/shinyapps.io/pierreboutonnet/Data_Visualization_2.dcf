@@ -5,7 +5,7 @@ account: pierreboutonnet
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10386613
-bundleId: 7879149
+bundleId: 7894512
 url: https://pierreboutonnet.shinyapps.io/Data_Visualization_2/
 version: 1
 asMultiple: FALSE

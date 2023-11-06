@@ -6,7 +6,6 @@ library(caret)
 library(dplyr)
 library(plotly)
 
-summary(dat$impact.significance)
 ######################
 ###Machine learning###
 ######################
@@ -93,4 +92,3 @@ gg<-ggplot(results, aes(x = True, y = Fitted)) +
   labs(x = "Valeurs Réelles (True)", y = "Valeurs Prédites (Fitted)") +
   ggtitle("Fitted vs. True Plot")
 
-ggplotly(gg)
