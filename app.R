@@ -8,7 +8,7 @@ library(ggplot2)
 library(DT)
 library(plotly)
 
-##############################################################
+################################################################################
 
 # Fontion pour donner la taille des cercles sur le leaflet
 
@@ -24,7 +24,7 @@ size_circle <- function(x){
 size_circle <- Vectorize(size_circle)
 
 
-#############################################################
+################################################################################
 
 ui <- bootstrapPage(
   navbarPage(theme = shinytheme("flatly"),title = "Earthquake🅁",
@@ -65,14 +65,29 @@ ui <- bootstrapPage(
                       ),
                       plotOutput('boxplot2')
              ),
-             tabPanel("Modèle prédictif"
+             tabPanel("Algorithme ML",includeHTML("machine_learning.html")
              ),
+             tabPanel("Outils de prédiction",
+                      sidebarLayout(
+                        sidebarPanel(
+                          selectInput("country_input", "Pays", choices = unique(train_data$location.country)),
+                          numericInput("depth_input", "Profondeur de l'épicentre", min = 0, value = 0),
+                          numericInput("magnitude_input", "Magnitude", min = 0, value = 0),
+                          actionButton("predict_button", "Effectuer la Prédiction")
+                        ),
+                        mainPanel(
+                          textOutput("text_output"),
+                          verbatimTextOutput("prediction_output")
+                        )
+                      )),
              tabPanel("Data", DT::dataTableOutput("data")
              ),
              tabPanel("Read Me",includeMarkdown("Readme.Rmd")
              )
-             ))
-#######################################################################################################
+  ))
+
+
+################################################################################
 
 server <- function(input, output, session) {
   
@@ -124,10 +139,10 @@ server <- function(input, output, session) {
         geom_boxplot(aes(x = location.continent, y = impact.magnitude ))+
         geom_jitter(aes(x = location.continent, y = impact.magnitude),color = "#009999",alpha = 0.2)+
         labs(x="Continent", y = "Fréquence")
+      
     }
     else if(input$ctn==location.continent.unique[7]){
-      ggplot(data = dat[dat$time.day >=input$num1[1] & dat$time.day <= input$num1[2],])+
-        geom_boxplot(aes(x = input$ctn, y = impact.magnitude ))+
+      ggplot(aes(x = input$ctn, y = impact.magnitude ))+
         geom_jitter( aes(x = input$ctn, y = impact.magnitude),color = "#009999",alpha = 0.2)+
         labs(x="Continent", y = "Fréquence")
     }
@@ -178,7 +193,22 @@ server <- function(input, output, session) {
                                 "<b> profondeur : </b>",location.depth,"<br>",
                                 "<b> date : </b>",time.day, "/062016", "<br>")
       )
-  })
+})
+  # Use a separate observer to recreate the legend as needed.
+observe({
+    pal <- colorpal()
+    
+    leafletProxy("map", data = filteredData()) %>%
+      clearShapes() %>%
+      addCircles(radius = ~size_circle(impact.magnitude), weight = 0.2, color = "#777777",
+                 fillColor = ~pal(impact.significance), fillOpacity = 0.7, 
+                 popup = ~paste("<b> id : </b>",id, "<br>",
+                                "<b> magnitude : </b>",impact.magnitude, "<br>",
+                                "<b> dégats : </b>", impact.significance, "<br>",
+                                "<b> profondeur : </b>",location.depth,"<br>",
+                                "<b> date : </b>",time.day, "/062016", "<br>")
+      )
+})
   # Use a separate observer to recreate the legend as needed.
   observe({
     proxy <- leafletProxy("map", data = dat)
@@ -193,6 +223,24 @@ server <- function(input, output, session) {
                           title = "Dégâts"
       ) 
     }
+})
+  observe({
+    
+  })
+  observeEvent(input$predict_button, {
+    # Récupérer les valeurs d'entrée
+    input_country <- input$country_input
+    input_depth <- input$depth_input
+    input_magnitude <- input$magnitude_input
+    
+    # Faites des prédictions avec votre modèle (à adapter)
+    prediction <- make_predictions(input_country, input_depth, input_magnitude)
+    output$prediction_output <- renderText({
+      paste("Prédiction :", prediction)  # Personnalisez le texte de sortie selon vos besoins
+      })
+  })
+  output$text_output <- renderText({
+    "L'outils de prédiction est basé sur l'algorithme Random Forest (présenté dans l'onglet algoritme ML)"
   })
 }
 

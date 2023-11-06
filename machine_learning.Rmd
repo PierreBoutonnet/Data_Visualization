@@ -1,0 +1,199 @@
+---
+title: "machine learning"
+output: html_fragment
+date: '2023-11-06'
+---
+# Introduction
+
+Les séismes sont des événements naturels dévastateurs qui peuvent causer d'importants dégâts matériels et humains. Prédire les dégâts potentiels d'un séisme est d'une importance capitale pour la gestion des risques, la planification d'urgence et la réduction des impacts sur les communautés. Pour réaliser ces prédictions, nous disposons de données précieuses, telles que le pays où le séisme se produit, sa magnitude (exprimée en échelle de Richter) et sa profondeur.
+
+Cependant, la prédiction des dégâts des séismes n'est pas une tâche simple, car de nombreux facteurs interviennent. C'est là qu'intervient l'algorithme *Random Forest*!
+
+# 1. Algorithme Random Forest
+
+Le Random Forest est un algorithme d'apprentissage automatique appartenant à la catégorie des méthodes d'ensemble. Il est utilisé pour résoudre des problèmes de classification et de régression
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(randomForest)
+library(caret)
+library(dplyr)
+library(plotly)
+library(ggplot2)
+```
+
+```{r, echo =FALSE, message=FALSE, warning=FALSE}
+#############
+# Data base #
+#############
+
+# package
+library(sp)
+library(rworldmap)
+library(ggplot2)
+library(DT)
+
+#### import de la base de données brut ###
+
+dat<-read.csv("earthquakes.csv")
+colnames(dat) <- c("id", "location.gap", "impact.magnitude", "impact.significance", "location.depth", "location.distance", "name", "lat", "long","state", "time.day", "epoch", "time", "hour", "minute", "month","second", "year")
+
+#### traitement de la base de données ###
+
+# on crée des classes pour dep et mag (profondeur et magnitude)
+# dat <- transform(dat, 
+#   impact.depth = ifelse(Depth <= 30, "faible", ifelse(impact.depth <= 70, "moyenne", "élevée")),
+#   impact.magnitude = cut(impact.magnitude, breaks = c(0, 1, 2, 3, 4, 5, 6, Inf), labels = c("0", "0-1", "1-2", # "2-3", "3-4", "4-5", "5-6"))
+# )
+
+# on convertit location.latitude/long en pays et continent
+coords2region <- function(points, get_country = TRUE) {
+  countriesSP <- getMap(resolution = 'low')
+  pointsSP = SpatialPoints(points, proj4string = CRS(proj4string(countriesSP)))
+  indices = over(pointsSP, countriesSP)
+  if (get_country) {
+    return(indices$ADMIN)
+  } else {
+    return(indices$REGION)
+  }
+}
+
+points <- data.frame(long = dat$long, lat = dat$lat)
+
+dat$location.country <- coords2region(points, get_country = TRUE)
+dat$location.continent <- coords2region(points, get_country = FALSE)
+
+# cas : significance >1000
+dat <- dat %>% 
+  mutate(impact.significance = ifelse(impact.significance > 1000, 1000, impact.significance)) %>%
+  mutate (location.continent = coalesce(location.continent, "Water")) %>%
+  mutate (location.country = coalesce(location.country, "Water"))
+
+location.continent.unique <- unique(dat$location.continent)
+location.continent.unique<-c(location.continent.unique,'All','comparaison')
+# conversion du jour 
+dat$time.day <- (dat$time.day + 5) %% 31
+
+
+# choix des colonnes interessantes
+dat <- dat[,c(1,2,3,4,5,6,8,9,11,19,20)]
+
+# on ne garde que certianes valeurs si les données ne sont pas safe
+dat <- dat[!(dat$location.distance > 7.1 | dat$location.gap > 180), ]
+
+# on enlève les NAs
+dat <- na.omit(dat)
+```
+
+## 1.1 Traitement des données
+
+Avant d'utliser l'algorithme *Random Forest* nous devons préparer nos données.
+
+Tout d'abord, nous devons  diviser notre jeux de données en deux (70% pour l'entraînement, 30% pour les tests).
+```{r, echo=TRUE, message=FALSE} 
+# Définir le taux de division (70% pour l'entraînement, 30% pour les tests)
+train_proportion <- 0.7
+
+# Créer l'ensemble de données d'entraînement et de test
+set.seed(123)  # Pour la reproductibilité
+splitIndex <- createDataPartition(dat$impact.significance, p = train_proportion, list = FALSE)
+train_data <- dat[splitIndex, ]
+test_data <- dat[-splitIndex, ]
+```
+
+Ensuite, on utlise le modèle d'encodage *one-hot* pour encoder nos données relatives à la loacalisation des séismes...
+```{r, echo=TRUE, message=FALSE}
+# Création du modèle d'encodage one-hot
+dummy_model_train <- dummyVars(~ location.country, data = train_data)
+dummy_model_test <- dummyVars(~ location.country, data = test_data)
+
+# Transformation des données d'entraînement
+train_data_encoded <- predict(dummy_model_train, newdata = train_data)
+test_data_encoded <- predict(dummy_model_test, newdata = test_data)
+```
+
+Enfin, on standardise nos variables impact.magnitude et impact.profondeur pour que leur ordre de grandeur soit comparable. 
+```{r, echo=FALSE, message=FALSE}
+# Calcul des moyennes et écarts-types des variables
+mean_depth <- mean(train_data$location.depth)
+sd_depth <- sd(train_data$location.depth)
+
+mean_magnitude <- mean(train_data$impact.magnitude)
+sd_magnitude <- sd(train_data$impact.magnitude)
+```
+
+```{r, echo=TRUE, message = FALSE}
+# Standardisation (z-score) des variables
+train_data$impact.depth_standardisee <- (train_data$location.depth - mean_depth) / sd_depth
+train_data$impact.magnitude_standardisee <- ((train_data$impact.magnitude - mean_magnitude) /
+  sd_magnitude)
+test_data$impact.depth_standardisee <- (test_data$location.depth - mean_depth) / sd_depth
+test_data$impact.magnitude_standardisee <- ((test_data$impact.magnitude - mean_magnitude) / sd_magnitude)
+```
+
+```{r, echo=FALSE, message=FALSE}
+# Extraire les noms de colonnes de la première ligne de la matrice
+colnames <- as.character(train_data_encoded[1, ])
+colnames <- as.character(test_data_encoded[1, ])
+
+# Créer un data frame avec les noms de colonnes et les données de la matrice
+train_data_encoded <- as.data.frame(train_data_encoded, col.names = colnames)
+test_data_encoded <- as.data.frame(test_data_encoded, col.names = colnames)
+
+train_data_encoded$impact.significance <- train_data$impact.significance
+train_data_encoded$impact.depth_standardisee <- train_data$impact.depth_standardisee
+train_data_encoded$impact.magnitude_standardisee <- train_data$impact.magnitude_standardisee
+
+test_data_encoded$impact.significance <- test_data$impact.significance
+test_data_encoded$impact.depth_standardisee <- test_data$impact.depth_standardisee
+test_data_encoded$impact.magnitude_standardisee <- test_data$impact.magnitude_standardisee
+
+# Enlevez les espaces dans les noms des colonnes
+colnames(train_data_encoded) <- gsub(" ", "", colnames(train_data_encoded))
+colnames(test_data_encoded) <- gsub(" ", "", colnames(test_data_encoded))
+
+```
+
+```{r, echo=FALSE, message=FALSE}
+# Obtenez la liste des noms de colonnes communes
+common_columns <- intersect(colnames(test_data_encoded), colnames(train_data_encoded))
+
+# Extrait uniquement les colonnes communes de df1 et df2
+test_data_encoded_common <- test_data_encoded[, common_columns]
+train_data_encoded_common <- train_data_encoded[, common_columns]
+```
+
+## 1.2 Modelisation et prediction
+
+Pour développer notre modèle, nous avons utilisé la fonction randomForest() du package RandomForest de R. Ici nous essayons d'expliquer les dégats d'un séisme (impact.significance) en fonction de la profondeur (impact.depth), la magnitude (impact.magnitude) et la localisation (data frame qui contient nos données location.country encodées).
+```{r, echo=TRUE, message=FALSE}
+rf_model <- randomForest(impact.significance ~ impact.depth_standardisee + impact.magnitude_standardisee + ., data = train_data_encoded_common)
+```
+
+On prédit les dégats de nos séismes qui sont dans la base de test (tast_data).
+```{r, echo=TRUE}
+predictions <- predict(rf_model, newdata = test_data_encoded_common)
+```
+
+Une des méthodes pour comparer nos prédictions et nos valeurs réelles est de calculer le RMSE, ici on a,
+```{r, echo=FALSE}
+rmse <- sqrt(mean((predictions - test_data_encoded$impact.significance)^2))
+cat("erreur quadratique moyenne : ", rmse)
+```
+
+# 1.3 Visualisation 
+
+Le meilleur moyen de visualiser nos prédictions est un graphe de type fitted vs true. 
+L'idée est de comparer les données prédites et réelles sur un même graphique.
+```{r, echo=FALSE, message=FALSE, eval=TRUE}
+### Graphique fitted vs true ###
+# Créez un data frame avec les valeurs réelles et prédites
+results <- data.frame(True = test_data_encoded_common$impact.significance, Fitted = predictions)
+
+# Créez un graphique fitted vs. true avec ggplot2
+ggplot(results, aes(x = True, y = Fitted)) +
+  geom_point() +                  # Affichez les points
+  geom_abline(intercept = 0, slope = 1, color = "red") +  # Ajoutez une ligne de référence (y=x)
+  labs(x = "Valeurs Réelles (True)", y = "Valeurs Prédites (Fitted)") +
+  ggtitle("Fitted vs. True Plot")
+
+```
+

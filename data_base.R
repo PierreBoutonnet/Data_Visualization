@@ -58,5 +58,4 @@ dat <- dat[!(dat$location.distance > 7.1 | dat$location.gap > 180), ]
 # on enlève les NAs
 dat <- na.omit(dat)
 
-View(dat)
 
