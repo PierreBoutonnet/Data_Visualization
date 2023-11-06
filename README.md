@@ -6,10 +6,18 @@
 👾 Les membres du projet : Juliette, Maxence et Pierre
 
 ## Introduction
-L'application *Earthquake🅁* est une app Rshiny, son objectif est de visualiser et d'étudier les séismes recueillis par le Service géologique des États-Unis en juin 2016. *Earthquake🅁* est composé de trois sections : 
+L'application *Earthquake🅁* est une app Rshiny, son objectif est de visualiser et d'étudier les séismes recueillis par le Service géologique des États-Unis en juin 2016. *Earthquake🅁* est composé de trois sections principales : 
+
+1) Visualisation
 * 🌍 Map, la carte du monde interactive pour visualiser la localisation et l'impact des séismes.
 * 📊 Statistiques, ...
-* 🤖 Modèles prédictifs, ...
+
+2) Modélisation et prédiction
+* 🤖 Algorithme ML, ...
+* 🛠️ Outils de prédiction,...
+
+3) Data base
+* 🔢 Data, ...
 
 ## Fonctionnement de Earthquake🅁
 
@@ -21,7 +29,11 @@ La palette de couleurs permet de modifier le gradient de couleur qui sert d'éch
 #### Statistiques
 ...
 
-#### Modèles prédictifs
+#### Algorithme ML
+...
+
+#### Outils de prédiction
+
 ...
 
 ## Data base
@@ -32,7 +44,7 @@ Dans cette partie nous décrirons succinctement la base de données (une descrit
 
 La base de données initiale 'earthquake.csv' recense 8394 séismes enregistrés par le Service géologique des États-Unis en juin 2016. Pour chaque séismes nous possèdons des informations sur la localisation, l'impacte et  la date pour un total de 18 variables. 
 
-Pour le projet, nous avons fait le choix de garder suelement 8 variables.
+Pour le projet, nous avons fait le choix de garder suelement 9 variables.
 * Id (string) : Un nom unique pour chaque séisme.
 * Impact
   - gap (float) : Le plus grand écart azimutal entre des stations azimutalement adjacentes. (en degrés)
@@ -42,8 +54,22 @@ Pour le projet, nous avons fait le choix de garder suelement 8 variables.
   - depth (float) : profondeur de l'épicentre du séismes (en km).
   - longitude (float) : longitude du séisme
   - latitude (float) : latitude du séisme
+  - distance (float) : The rough distance that this earthquake occurred away from the reporting station.
+* Time
+  - day (int)
+ 
+Les variables impact.gap et location.distance sont conservées pour filtrer notre base de données et garder uniquement les sésimes "fiables". En effet, on retire de la base de données les séismes qui ont un gap > 180° ou distance > 7.1° car au dela de ces valeurs les données enregistrées sont moins fiables.
 
-Pour se projet nous avons garder 8 variables de la base de données initiale,
+En utlisant le package Rworlmap, nous avons converti les données location.longitude et location.latitude en location.country (pays où a eu lieu le sésisme). Cela permet une meilleure comprehension et visualisation de nos données.
+
+
+
+
+
+
+
+  
+
 
 .
 .
