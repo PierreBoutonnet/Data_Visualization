@@ -2,9 +2,6 @@
 
 👾 Les membres du projet : Juliette, Maxence et Pierre
 
-![Image](lien_vers_une_image.png) <!-- Ajoutez une image représentative de votre projet -->
-![Capture d'écran de l'application](/Users/boutonnet/Desktop/Capture d’écran 2024-01-14 à 01.45.18.png)
-
 ## Aperçu
 
 L'application Earthquake🅁 est une application R Shiny qui a pour objectif de visualiser et d'analyser les données sur les séismes collectées par le Service géologique des États-Unis en juin 2016.
