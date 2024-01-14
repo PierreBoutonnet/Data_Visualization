@@ -1,80 +1,60 @@
-# Data visualization
-👀 Projet data visualization ISUP
-
-🚀 L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization_2/)
+# Projet de Data Visualization sur les Séismes
 
 👾 Les membres du projet : Juliette, Maxence et Pierre
 
-## Introduction
-L'application *Earthquake🅁* est une app Rshiny, son objectif est de visualiser et d'étudier les séismes recueillis par le Service géologique des États-Unis en juin 2016. *Earthquake🅁* est composé de trois sections principales : 
+![Image](lien_vers_une_image.png) <!-- Ajoutez une image représentative de votre projet -->
 
-1) Visualisation
-* 🌍 Map, la carte du monde interactive pour visualiser la localisation et l'impact des séismes.
-* 📊 Statistiques, ...
+## Aperçu
 
-2) Modélisation et prédiction
-* 🤖 Algorithme ML, ...
-* 🛠️ Outils de prédiction,...
+L'application Earthquake🅁 est une application R Shiny qui a pour objectif de visualiser et d'analyser les données sur les séismes collectées par le Service géologique des États-Unis en juin 2016.
 
-3) Data base
-* 🔢 Data, ...
+🚀 L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization_2/)
 
-## Fonctionnement de Earthquake🅁
+## Fonctionnalités
 
-#### Map 
-La carte du monde est entièrement interactive. Il est possible de zoommer et/ou de cliquer sur les séismes symbolisés par des cerlces de couleurs. En cliquant sur les séismes plusieurs informations s'affichent comme l'ID du séismes, sa magnitude et les dégats causés par celui-ci. 
-Les deux sliders permettent de filtrer la base de données  par rapport à la période et la magnitude des séismes que l'utilisateur souhaite observer.
-La palette de couleurs permet de modifier le gradient de couleur qui sert d'échelle pour les dégâts causé par les séismes (plus de 25 gradients de couleurs sont disponible). Le bouton "Afficher la légende" peut être coché ou décoché pour afficher ou non la légende.
+Earthquake🅁 est divisé en trois sections principales:
 
-#### Statistiques
-...
+### Visualisation
 
-#### Algorithme ML
-...
+#### Carte Interactive
 
-#### Outils de prédiction
+- La carte du monde est entièrement interactive, permettant aux utilisateurs de zoomer et de cliquer sur les séismes représentés par des cercles colorés.
+- En cliquant sur un séisme, plusieurs informations s'affichent, telles que l'ID du séisme, sa magnitude et les dégâts causés.
+- Deux curseurs permettent de filtrer la base de données en fonction de la période et de la magnitude des séismes à observer.
+- Une palette de couleurs personnalisable permet de modifier le gradient de couleur utilisé pour représenter les dégâts causés par les séismes.
+- L'option "Afficher la légende" permet de masquer ou d'afficher la légende de la carte.
 
-...
+### Statistiques
 
-## Data base
+- (Ajoutez ici une description des fonctionnalités de la section Statistiques)
 
-La base de données utilisée pour réaliser ce projet est disponible [ici](https://corgis-edu.github.io/corgis/csv/earthquakes/). 
-#### Descrition 
-Dans cette partie nous décrirons succinctement la base de données (une descrition plus complète est disponible [ici](https://corgis-edu.github.io/corgis/csv/earthquakes/)).
+### Modélisation et Prédiction
 
-La base de données initiale 'earthquake.csv' recense 8394 séismes enregistrés par le Service géologique des États-Unis en juin 2016. Pour chaque séismes nous possèdons des informations sur la localisation, l'impacte et  la date pour un total de 18 variables. 
+- (Ajoutez ici une description des fonctionnalités de la section Modélisation et Prédiction)
 
-Pour le projet, nous avons fait le choix de garder suelement 9 variables.
-* Id (string) : Un nom unique pour chaque séisme.
-* Impact
-  - gap (float) : Le plus grand écart azimutal entre des stations azimutalement adjacentes. (en degrés)
-  - magnitude (float) : Une mesure sur la taille du séisme à sa source.
-  - significance (integer) : Un nombre qui décrit l'ampleur du séisme. Cette valeur est déterminée par plusieurs facteurs comme la magnitude, le maximum MMI, le ressenti de la population, les dégâts matériels et humains.
-* Location
-  - depth (float) : profondeur de l'épicentre du séismes (en km).
-  - longitude (float) : longitude du séisme
-  - latitude (float) : latitude du séisme
-  - distance (float) : The rough distance that this earthquake occurred away from the reporting station.
-* Time
-  - day (int)
- 
-Les variables impact.gap et location.distance sont conservées pour filtrer notre base de données et garder uniquement les sésimes "fiables". En effet, on retire de la base de données les séismes qui ont un gap > 180° ou distance > 7.1° car au dela de ces valeurs les données enregistrées sont moins fiables.
+## Description de la Base de Données
 
-En utlisant le package Rworlmap, nous avons converti les données location.longitude et location.latitude en location.country (pays où a eu lieu le sésisme). Cela permet une meilleure comprehension et visualisation de nos données.
+La base de données initiale, nommée 'earthquake.csv', contient des informations sur 8394 séismes enregistrés en juin 2016 par le Service géologique des États-Unis. Chaque séisme est caractérisé par 18 variables.
 
+La base de données utilisée pour ce projet est accessible [ici](lien_vers_la_base_de_données).
 
+Dans le cadre de ce projet, nous avons choisi de conserver uniquement 9 variables pour l'analyse:
 
+1. `Id` (chaîne de caractères): Un identifiant unique pour chaque séisme.
+2. `Impact` (ajoutez une description de cette variable).
+3. `gap` (nombre décimal): Le plus grand écart azimutal entre des stations azimutalement adjacentes, en degrés.
+4. `magnitude` (nombre décimal): Une mesure de la taille du séisme à sa source.
+5. `significance` (entier): Un nombre qui décrit l'ampleur du séisme, déterminé par plusieurs facteurs tels que la magnitude, le maximum MMI, les dégâts matériels et humains, etc.
+6. `Location` (ajoutez une description de cette variable).
+7. `depth` (nombre décimal): La profondeur de l'épicentre du séisme, en kilomètres.
+8. `longitude` (nombre décimal): La longitude du séisme.
+9. `latitude` (nombre décimal): La latitude du séisme.
+10. `distance` (nombre décimal): La distance approximative à laquelle le séisme s'est produit par rapport à la station de signalement.
+11. `day` (entier): Le jour du mois où le séisme s'est produit.
 
+Les variables `impact.gap` et `location.distance` sont utilisées pour filtrer la base de données et exclure les séismes dont les données sont moins fiables (avec un écart azimutal supérieur à 180° ou une distance supérieure à 7.1°).
 
-
-
-  
-
-
-.
-.
-
-
+De plus, en utilisant le package `Rworldmap`, nous avons converti les données de `location.longitude` et `location.latitude` en `location.country` (pays où le séisme a eu lieu), ce qui améliore la compréhension et la visualisation des données géographiques.
 
 
 
