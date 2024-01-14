@@ -22,11 +22,14 @@ Earthquake🅁 est divisé en trois sections principales:
 
 ### Statistiques
 
-- (Ajoutez ici une description des fonctionnalités de la section Statistiques)
-
+- Visualisation des données sous forme d'histogrammes et de boxplots.
+- Grâce à l'interface dynamique, l'utilisateur peut choisir de visualiser les données pour un continent et une période en particulier.
+  
 ### Modélisation et Prédiction
 
-- (Ajoutez ici une description des fonctionnalités de la section Modélisation et Prédiction)
+- Présentation de l'algorithme de machine learning Random Forest.
+- Application de l'algortithme à nos données.
+- L'utilisateur peut faire une prédiction de la variable dégâts en fonctions des paramètres pays, profondeur de l'épicentre et magnitude.
 
 ## Description de la Base de Données
 
