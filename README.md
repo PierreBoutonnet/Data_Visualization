@@ -4,7 +4,7 @@
 
 L'application Earthquake🅁 est une application R Shiny qui a pour objectif de visualiser et d'analyser les données sur les séismes collectées par le Service géologique des États-Unis en juin 2016. Ce projet a été réalisé par Maxence, Juliette et Pierre.
 
-L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization_2/)
+L'application *Earthquake🅁* est disponible [ici](https://pierreboutonnet.shinyapps.io/Data_Visualization_3/)
 
 ## Fonctionnalités
 
