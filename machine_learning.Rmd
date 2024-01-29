@@ -182,7 +182,7 @@ cat("erreur quadratique moyenne : ", rmse)
 # 1.3 Visualisation 
 
 Le meilleur moyen de visualiser nos prédictions est un graphe de type fitted vs true. 
-L'idée est de comparer les données prédites et réelles sur un même graphique.
+L'idée est de comparer les données prédites et réelles sur un même graphique. Les points de notre graphique sont répartis assez proche de la droite $y=x$. Nous pouvons donc affirmer que le modèle prédit correctement nos données.
 ```{r, echo=FALSE, message=FALSE, eval=TRUE}
 ### Graphique fitted vs true ###
 # Créez un data frame avec les valeurs réelles et prédites
