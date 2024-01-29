@@ -35,7 +35,7 @@ Earthquake🅁 est divisé en trois sections principales:
 
 La base de données initiale, nommée 'earthquake.csv', contient des informations sur 8394 séismes enregistrés en juin 2016 par le Service géologique des États-Unis. Chaque séisme est caractérisé par 18 variables.
 
-La base de données utilisée pour ce projet est accessible [ici](lien_vers_la_base_de_données).
+La base de données utilisée pour ce projet est accessible [ici](https://corgis-edu.github.io/corgis/csv/earthquakes/).
 
 Dans le cadre de ce projet, nous avons choisi de conserver uniquement 9 variables pour l'analyse:
 
